@@ -1,10 +1,8 @@
 package com.gozap.sm;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.Context;
@@ -53,51 +51,5 @@ public class GozapContextValve extends ValveBase {
 
 		context.getServletContext().getSessionCookieConfig().setMaxAge(manager.getCookieMaxAge());
 
-		boolean hasCookie = false;
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if ("gpsd".equals(cookie.getName())) {
-					hasCookie = true;
-				}
-			}
-		}
-		if (!hasCookie) {
-
-			Cookie cookie = new Cookie("gpsd", "gozap_rsm_" + UUID.randomUUID().toString().replaceAll("-", ""));
-
-			cookie.setMaxAge(manager.getCookieMaxAge());
-
-			String contextPath = context.getSessionCookiePath();
-			if (contextPath == null) {
-				contextPath = context.getSessionCookiePath();
-
-				if (contextPath == null || contextPath.length() == 0) {
-					contextPath = context.getEncodedPath();
-				}
-				if (context.getSessionCookiePathUsesTrailingSlash()) {
-					if (!contextPath.endsWith("/")) {
-						contextPath = contextPath + "/";
-					}
-				} else {
-					if (contextPath.length() == 0) {
-						contextPath = "/";
-					}
-				}
-			}
-
-			cookie.setPath(contextPath);
-
-			// if (context.getSessionCookieDomain() != null) {
-			// cookie.setDomain(context.getSessionCookieDomain());
-			// } else {
-			// if (context.getSessionCookieDomain() == null) {
-			//
-			// } else {
-			// cookie.setDomain(context.getSessionCookieDomain());
-			// }
-			// }
-			response.addSessionCookieInternal(cookie);
-		}
 	}
 }

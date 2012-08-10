@@ -9,7 +9,7 @@ import com.gozap.sm.redis.RedisOperator;
 
 abstract public class GozapSessionManagerBase extends ManagerBase {
 
-	protected static final String defaultHostPort = "172.16.2.5:6379";
+	protected static final String defaultHostPort = "127.0.0.1:6379";
 
 	// ===================必须注入=====================
 	private int maxActive = 200;
