@@ -17,7 +17,7 @@
 
 	<!-- Uncomment this to disable session persistence across Tomcat restarts -->
 	<Manager className="com.gozap.sm.redis.GozapSessionManagerRedis"
-		expireTime="28800" cookieMaxAge="7200" maxActive="100" maxIdle="50"
+		expireTime="28800" cookieMaxAge="7200" useDefault="true" maxActive="100" maxIdle="50"
 		minIdle="10" maxWait="10000" hostPorts="127.0.0.1:6379" />
 	<!-- Uncomment this to enable Comet connection tacking (provides events 
 		on session expiration as well as webapp lifecycle) -->
