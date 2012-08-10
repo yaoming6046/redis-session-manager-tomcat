@@ -24,6 +24,8 @@ abstract public class GozapSessionManagerBase extends ManagerBase {
 	// cookie信息
 	protected int cookieMaxAge = 30 * 60;
 	protected RedisOperator redis = new RedisOperator();
+	// 是否优先使用默认的session.
+	private boolean useDefault = true;
 	// ===================不需要注入====================
 	protected GozapJson json = new GozapJavaJson();
 
@@ -98,6 +100,14 @@ abstract public class GozapSessionManagerBase extends ManagerBase {
 
 	public void setHostPorts(String hostPorts) {
 		this.hostPorts = hostPorts;
+	}
+
+	public boolean isUseDefault() {
+		return useDefault;
+	}
+
+	public void setUseDefault(boolean useDefault) {
+		this.useDefault = useDefault;
 	}
 
 }

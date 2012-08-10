@@ -40,10 +40,15 @@ public class GozapSessionManagerRedis extends GozapSessionManagerBase implements
 		if (null == id) {
 			return null;
 		}
+
 		JedisPool pool = selectPool(id);
 		redis.expire(pool, id, expireTime);
 
-		Session s = super.findSession(id);
+		Session s = null;
+		if (isUseDefault()) {
+			s = super.findSession(id);
+		}
+
 		if (s != null && s.isValid()) {
 			return s;
 		}
@@ -119,7 +124,10 @@ public class GozapSessionManagerRedis extends GozapSessionManagerBase implements
 	@Override
 	public void add(Session session) {
 		log.info("invoke add");
-		super.add(session);
+
+		if (isUseDefault()) {
+			super.add(session);
+		}
 
 		if (null != session) {
 
@@ -164,7 +172,9 @@ public class GozapSessionManagerRedis extends GozapSessionManagerBase implements
 	@Override
 	public void remove(Session session, boolean update) {
 		log.info("invoke removeupdate");
-		super.remove(session, update);
+		if (isUseDefault()) {
+			super.remove(session, update);
+		}
 
 		String id = session.getId();
 		JedisPool pool = selectPool(id);
@@ -174,7 +184,9 @@ public class GozapSessionManagerRedis extends GozapSessionManagerBase implements
 	@Override
 	public Session createEmptySession() {
 		log.info("invoke createEmptySession");
-		super.createEmptySession();
+		if (isUseDefault()) {
+			super.createEmptySession();
+		}
 		return new GozapSession(this);
 	}
 
@@ -185,7 +197,15 @@ public class GozapSessionManagerRedis extends GozapSessionManagerBase implements
 
 	@Override
 	public Session createSession(String sessionId) {
-		Session s = super.createSession(sessionId);
+
+		Session s = null;
+		if (isUseDefault()) {
+			s = super.createSession(sessionId);
+		} else {
+			s = new GozapSession(this);
+			s.setId(generateSessionId());
+		}
+
 		log.info("invoke createSession");
 		JedisPool pool = selectPool(s.getId());
 		addDefault(pool, s.getId());
