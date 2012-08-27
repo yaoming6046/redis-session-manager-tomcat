@@ -33,7 +33,7 @@ public class GozapContextValve extends ValveBase {
 		afterInvoke(request, response, context);
 	}
 
-	private void afterInvoke(Request request, Response response, Context context) {
+	private void beforeInvoke(Request request, Response response, Context context) {
 		HttpSession session = request.getSession();
 		if (session != null) {
 			String id = session.getId();
@@ -45,7 +45,7 @@ public class GozapContextValve extends ValveBase {
 	}
 
 	/** 设置cookie的属性 */
-	private void beforeInvoke(Request request, Response response, Context context) {
+	private void afterInvoke(Request request, Response response, Context context) {
 
 		GozapSessionManagerRedis manager = (GozapSessionManagerRedis) context.getManager();
 
